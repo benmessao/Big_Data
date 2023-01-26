@@ -1,33 +1,22 @@
-apiVersion: apps/v1 # Defines the version of the API we are going to use
-kind: Deployment # Defines the resource used
+apiVersion: apps/v1
+kind: Deployment
 metadata:
-  name: dashboard-deployment # Defines a name for that resource
-
-## Defines a name to map it to other resources ##
-##############################################################
+  name: mlflow-deployment
 spec:
+  replicas: 2
   selector:
     matchLabels:
-      app: streamlit-dashboard
-  ##############################################################
-  replicas: 2 # Tells deployment to run 2 pods matching the template
-
-  ## Defines a template config for each Pod ##
-  ############################################
+      app: mlflow-dashboard
   template:
     metadata:
       labels:
-        app: streamlit-dashboard # Name of each pod (an id will be added next to it)
+        app: mlflow-dashboard
     spec:
       containers:
-        - name: streamlit-demo # Name of each container within the pod
-          image: jedha/streamlit-demo-for-k8s # Path of the image registry
-          env: # Defines Environment variables
+        - env:
             - name: PORT
               value: "8080"
+          image: jedha/sample-mlflow-server
+          name: mlflow-server
           ports:
-            - containerPort: 8080 # Define port mapping
-############################################
-Now let's apply that configuration to our cluster. To do so, simply run:
-
-kubectl apply -f dashboard-deployme
+            - containerPort: 8080
