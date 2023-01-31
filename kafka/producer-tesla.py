@@ -64,7 +64,7 @@ try:
             #on_delivery=acked
         )
         producer.poll(0)
-        time.sleep(1)
+        time.sleep(0.1)
         
 
  # Interrupt infinite loop when hitting CTRL+C
